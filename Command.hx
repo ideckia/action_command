@@ -1,6 +1,6 @@
 package;
 
-using api.IdeckiaCmdApi;
+using api.IdeckiaApi;
 typedef Props = {
     @:editable("Path to the command")
     var cmd:String;
@@ -8,7 +8,7 @@ typedef Props = {
     var ?args:Array<String>;
 }
 
-class Command extends IdeckiaCmd {
+class Command extends IdeckiaAction {
 
 	public function execute():ItemState {
         var status = Sys.command(props.cmd, props.args);
