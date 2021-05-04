@@ -4,6 +4,13 @@
 
 Will execute a the given command-line command and arguments
 
+## Properties
+
+| Name | Type | Description | Default | Possible values |
+| ----- |----- | ----- | ----- | ----- |
+| cmd | String | Path to the command | true | null |
+| args | Array<String> | Arguments for the command | null | null |
+
 ## Example in layout file
 
 ```json
