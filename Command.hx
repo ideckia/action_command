@@ -10,12 +10,12 @@ typedef Props = {
 
 class Command extends IdeckiaAction {
 
-	public function execute():ItemState {
+	public function execute(currentState:ItemState):ItemState {
         var status = Sys.command(props.cmd, props.args);
         if (status != 0) {
             var args = (props.args == null) ? '' : props.args.join(' ');
             server.log.error('Something went wrong (status=$status) executing [${props.cmd} ${args}]');
         }
-        return state;
+        return currentState;
 	}
 }
