@@ -12,18 +12,18 @@ typedef Props = {
 }
 
 class Command extends IdeckiaAction {
-	public function execute(currentState:ItemState):ItemState {
-		var cmd = ChildProcess.spawn(props.cmd, props.args, {shell: true});
-
-		cmd.stdout.on('data', function(data) {
-			server.log.debug('stdout: ' + data);
+	public function execute(currentState:ItemState):js.lib.Promise<ItemState> {
+		return new js.lib.Promise((resolve, reject) -> {
+			var options:ChildProcessSpawnOptions = {
+				shell: true,
+				detached: true,
+				stdio: 'ignore'
+			}
+			var cmd = ChildProcess.spawn(props.cmd, props.args, options);
+			cmd.unref();
+			cmd.disconnect();
+	
+			return resolve(currentState);
 		});
-
-		cmd.on('error', function(code) {
-			var args = (props.args == null) ? '' : props.args.join(' ');
-			server.log.error('Something went wrong (code=$code) executing [${props.cmd} ${args}]');
-		});
-
-		return currentState;
 	}
 }
