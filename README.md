@@ -6,10 +6,10 @@ Will execute a the given command-line command and arguments
 
 ## Properties
 
-| Name | Type | Description | Default | Possible values |
+| Name | Type | Default | Description | Possible values |
 | ----- |----- | ----- | ----- | ----- |
-| cmd | String | Path to the command | true | null |
-| args | Array<String> | Arguments for the command | null | null |
+| cmd | String | null | Path to the command | null |
+| args | Null<Array<String>> | null | Arguments for the command | null |
 
 ## Example in layout file
 

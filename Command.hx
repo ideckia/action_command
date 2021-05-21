@@ -17,13 +17,15 @@ class Command extends IdeckiaAction {
 			var options:ChildProcessSpawnOptions = {
 				shell: true,
 				detached: true,
-				stdio: 'ignore'
+				stdio: Ignore
 			}
-			var cmd = ChildProcess.spawn(props.cmd, props.args, options);
+
+			var cmd = (props.args != null)
+						? ChildProcess.spawn(props.cmd, props.args, options)
+						: ChildProcess.spawn(props.cmd, options);
 			cmd.unref();
-			cmd.disconnect();
-	
-			return resolve(currentState);
+			cmd.on('error', reject);
+			resolve(currentState);
 		});
 	}
 }
