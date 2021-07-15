@@ -9,7 +9,8 @@ Will execute a the given command-line command and arguments
 | Name | Type | Default | Description | Possible values |
 | ----- |----- | ----- | ----- | ----- |
 | cmd | String | null | Path to the command | null |
-| args | Null<Array<String>> | null | Arguments for the command | null |
+| args | Null&lt;Array&lt;String&gt;&gt; | null | Arguments for the command | null |
+| confirm | Null&lt;Bool&gt; | false | Does it need confirmation? | null |
 
 ## Example in layout file
 
