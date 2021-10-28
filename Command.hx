@@ -13,6 +13,8 @@ typedef Props = {
 	var ?confirm:Bool;
 }
 
+@:name('command')
+@:description('Executes system command')
 class Command extends IdeckiaAction {
 	public function execute(currentState:ItemState):js.lib.Promise<ItemState> {
 		return new js.lib.Promise((resolve, reject) -> {
