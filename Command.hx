@@ -32,7 +32,7 @@ class Command extends IdeckiaAction {
 			}
 
 			if (props.confirm) {
-				server.dialog(Question, 'Do you want to execute [${props.cmd}]?').then(value -> {
+				server.dialog.question('Do you want to execute [${props.cmd}]?').then(value -> {
 					if (value == 'OK') {
 						exec();
 					} else {
