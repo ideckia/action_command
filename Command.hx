@@ -11,6 +11,8 @@ typedef Props = {
 	var ?args:Array<String>;
 	@:editable("Does it need confirmation?", false)
 	var ?confirm:Bool;
+	@:editable("Password", '')
+	var password:String;
 }
 
 @:name('command')
@@ -28,6 +30,9 @@ class Command extends IdeckiaAction {
 				var cmd = (props.args != null) ? ChildProcess.spawn(props.cmd, props.args, options) : ChildProcess.spawn(props.cmd, options);
 				cmd.unref();
 				cmd.on('error', reject);
+				if (props.password != '')
+					cmd.stdin.write(props.password + '\n');
+
 				resolve(currentState);
 			}
 
