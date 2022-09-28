@@ -2,11 +2,20 @@
 	{
 		"name": "shutdown windows",
 		"props": {
-			"cmd": "shutdown",
+			"command": "shutdown",
 			"args": [
 				"/s"
 			],
 			"confirm": true
+		}
+	},
+	{
+		"name": "deadbeef play/pause",
+		"props": {
+			"command": "deadbeef",
+			"args": [
+				"--play-pause"
+			]
 		}
 	}
 ]

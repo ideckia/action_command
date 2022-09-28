@@ -6,13 +6,13 @@ using api.IdeckiaApi;
 
 typedef Props = {
 	@:editable("Path to the command")
-	var cmd:String;
+	var command:String;
 	@:editable("Arguments for the command")
 	var ?args:Array<String>;
 	@:editable("Does it need confirmation?", false)
 	var ?confirm:Bool;
-	@:editable("Password", '')
-	var password:String;
+	@:editable("Run the command and don't wait for any response?", true)
+	var ?detached:Bool;
 }
 
 @:name('command')
@@ -22,23 +22,51 @@ class Command extends IdeckiaAction {
 		return new js.lib.Promise((resolve, reject) -> {
 			function exec() {
 				var options:ChildProcessSpawnOptions = {
-					shell: true,
-					detached: true,
-					stdio: Ignore
+					shell: true
 				}
 
-				var cmd = (props.args != null) ? ChildProcess.spawn(props.cmd, props.args, options) : ChildProcess.spawn(props.cmd, options);
-				cmd.unref();
-				cmd.on('error', reject);
-				if (props.password != '')
-					cmd.stdin.write(props.password + '\n');
+				if (props.detached) {
+					options.detached = true;
+					options.stdio = Ignore;
+				}
 
-				resolve(currentState);
+				var cmd = if (props.args != null && props.args.length > 0) {
+					ChildProcess.spawn(props.command, props.args, options);
+				} else {
+					ChildProcess.spawn(props.command, options);
+				}
+
+				if (props.detached) {
+					cmd.unref();
+					resolve(currentState);
+					return;
+				}
+
+				var data = '';
+				cmd.stdout.on('data', e -> {
+					data += e;
+				});
+				cmd.stdout.on('end', e -> {
+					if (data != '')
+						showResponse('Command [${currentState.text}] output', data, false);
+
+					resolve(currentState);
+				});
+				var error = '';
+				cmd.stderr.on('data', e -> {
+					error += e;
+				});
+				cmd.stderr.on('end', e -> {
+					if (error != '') {
+						showResponse('Command [${currentState.text}] error', error, true);
+						reject(error);
+					}
+				});
 			}
 
 			if (props.confirm) {
-				server.dialog.question('Do you want to execute [${props.cmd}]?').then(value -> {
-					if (value == 'OK') {
+				server.dialog.question('Are you sure?', 'Do you want to execute [${props.command}]?').then(isOk -> {
+					if (isOk) {
 						exec();
 					} else {
 						resolve(currentState);
@@ -48,5 +76,18 @@ class Command extends IdeckiaAction {
 				exec();
 			}
 		});
+	}
+
+	function showResponse(title:String, response:String, isError:Bool) {
+		var lines = response.split('\n').filter(e -> e != '');
+		if (lines.length == 1) {
+			if (isError)
+				server.dialog.error(title, response);
+			else
+				server.dialog.info(title, response);
+		} else {
+			var text = lines.shift();
+			server.dialog.list(title, text, text, lines);
+		}
 	}
 }
