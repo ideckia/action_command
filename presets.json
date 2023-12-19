@@ -10,9 +10,17 @@
 		}
 	},
 	{
-		"name": "deadbeef play/pause",
+		"name": "shutdown linux",
 		"props": {
-			"command": "deadbeef",
+			"command": "shutdown",
+			"args": [],
+			"confirm": true
+		}
+	},
+	{
+		"name": "rhythmbox play/pause",
+		"props": {
+			"command": "rhythmbox-client",
 			"args": [
 				"--play-pause"
 			]

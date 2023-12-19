@@ -18,7 +18,7 @@ typedef Props = {
 @:name('command')
 @:description('Executes system command with given parameters')
 class Command extends IdeckiaAction {
-	public function execute(currentState:ItemState):js.lib.Promise<ItemState> {
+	public function execute(currentState:ItemState):js.lib.Promise<ActionOutcome> {
 		return new js.lib.Promise((resolve, reject) -> {
 			function exec() {
 				var options:ChildProcessSpawnOptions = {
@@ -38,7 +38,7 @@ class Command extends IdeckiaAction {
 
 				if (props.detached) {
 					cmd.unref();
-					resolve(currentState);
+					resolve(new ActionOutcome({state: currentState}));
 					return;
 				}
 
@@ -50,7 +50,7 @@ class Command extends IdeckiaAction {
 					if (data != '')
 						showResponse('Command [${currentState.text}] output', data, false);
 
-					resolve(currentState);
+					resolve(new ActionOutcome({state: currentState}));
 				});
 				var error = '';
 				cmd.stderr.on('data', e -> {
@@ -69,7 +69,7 @@ class Command extends IdeckiaAction {
 					if (isOk) {
 						exec();
 					} else {
-						resolve(currentState);
+						resolve(new ActionOutcome({state: currentState}));
 					}
 				}).catchError(reject);
 			} else {
