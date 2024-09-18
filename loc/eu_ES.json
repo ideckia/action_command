@@ -1,0 +1,38 @@
+[
+	{
+		"id": "action_description",
+		"text": "Sistemako komandoa exekutatzen du pasatako argumentuekin"
+	},
+	{
+		"id": "prop_command",
+		"text": "Komandoaren bidea"
+	},
+	{
+		"id": "prop_args",
+		"text": "Komandoaren argumentuak"
+	},
+	{
+		"id": "prop_confirm",
+		"text": "Baieztapena behar al du?"
+	},
+	{
+		"id": "prop_detached",
+		"text": "Komandoa exekutatu eta erantzunaren zain EZ egon?"
+	},
+	{
+		"id": "are_you_sure",
+		"text": "Ziur al zaude?"
+	},
+	{
+		"id": "do_you_want_execute",
+		"text": "[{0}] exekutatu nahi duzu?"
+	},
+	{
+		"id": "command_output",
+		"text": "[{0}] komandoaren irteera"
+	},
+	{
+		"id": "command_error",
+		"text": "[{0}] komandoaren errorea"
+	}
+]

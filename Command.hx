@@ -5,18 +5,19 @@ import js.node.ChildProcess;
 using api.IdeckiaApi;
 
 typedef Props = {
-	@:editable("Path to the command")
+	@:editable("prop_command")
 	var command:String;
-	@:editable("Arguments for the command")
+	@:editable("prop_args")
 	var ?args:Array<String>;
-	@:editable("Does it need confirmation?", false)
+	@:editable("prop_confirm", false)
 	var ?confirm:Bool;
-	@:editable("Run the command and don't wait for any response?", true)
+	@:editable("prop_detached", true)
 	var ?detached:Bool;
 }
 
 @:name('command')
-@:description('Executes system command with given parameters')
+@:description('action_description')
+@:localize
 class Command extends IdeckiaAction {
 	public function execute(currentState:ItemState):js.lib.Promise<ActionOutcome> {
 		return new js.lib.Promise((resolve, reject) -> {
@@ -48,7 +49,7 @@ class Command extends IdeckiaAction {
 				});
 				cmd.stdout.on('end', e -> {
 					if (data != '')
-						showResponse('Command [${currentState.text}] output', data, false);
+						showResponse(Loc.command_output.tr([currentState.text]), data, false);
 
 					resolve(new ActionOutcome({state: currentState}));
 				});
@@ -58,14 +59,14 @@ class Command extends IdeckiaAction {
 				});
 				cmd.stderr.on('end', e -> {
 					if (error != '') {
-						showResponse('Command [${currentState.text}] error', error, true);
+						showResponse(Loc.command_error.tr([currentState.text]), error, true);
 						reject(error);
 					}
 				});
 			}
 
 			if (props.confirm) {
-				server.dialog.question('Are you sure?', 'Do you want to execute [${props.command}]?').then(isOk -> {
+				core.dialog.question(Loc.are_you_sure.tr(), Loc.do_you_want_execute.tr([props.command])).then(isOk -> {
 					if (isOk) {
 						exec();
 					} else {
@@ -82,12 +83,12 @@ class Command extends IdeckiaAction {
 		var lines = response.split('\n').filter(e -> e != '');
 		if (lines.length == 1) {
 			if (isError)
-				server.dialog.error(title, response);
+				core.dialog.error(title, response);
 			else
-				server.dialog.info(title, response);
+				core.dialog.info(title, response);
 		} else {
 			var text = lines.shift();
-			server.dialog.list(title, text, text, lines);
+			core.dialog.list(title, text, text, lines);
 		}
 	}
 }

@@ -1,0 +1,38 @@
+[
+	{
+		"id": "action_description",
+		"text": "Executes system command with given parameters"
+	},
+	{
+		"id": "prop_command",
+		"text": "Path to the command"
+	},
+	{
+		"id": "prop_args",
+		"text": "Arguments for the command"
+	},
+	{
+		"id": "prop_confirm",
+		"text": "Does it need confirmation?"
+	},
+	{
+		"id": "prop_detached",
+		"text": "Run the command and don't wait for any response?"
+	},
+	{
+		"id": "are_you_sure",
+		"text": "Are you sure?"
+	},
+	{
+		"id": "do_you_want_execute",
+		"text": "Do you want to execute [{0}]?"
+	},
+	{
+		"id": "command_output",
+		"text": "Command [{0}] output"
+	},
+	{
+		"id": "command_error",
+		"text": "Command [{0}] error"
+	}
+]
